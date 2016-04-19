@@ -15,6 +15,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".JavaDemoActivity"
+            android:label="@string/java_demo"
+            >
+        </activity>
+        <activity
+            android:name=".AndroidDemoActivity"
+            android:label="@string/android_demo"
+            >
+        </activity>
     </application>
 
 </manifest>
