@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import rx.Observable;
+import rx.Observer;
+import rx.Subscriber;
+import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 public class JavaDemoActivity extends AppCompatActivity {
 
@@ -18,9 +20,115 @@ public class JavaDemoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_java_demo);
 
         String[] strArr = {"1111;1122", "true;true", "3333;3344", "true", "5555;5566", "false;123;true"};
-
         testNormalMethod(strArr);
         testRxJavaMethod(strArr);
+
+        testObserver();
+        testSubscribe();
+        testAction();
+    }
+
+    private void testAction() {
+        if (BuildConfig.DEBUG) Log.d(TAG, " ");
+        Log.d(TAG, "======= testAction =======");
+        Observable observable = Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                subscriber.onNext("Hello");
+                subscriber.onNext("World");
+                subscriber.onNext("!");
+                subscriber.onCompleted();
+            }
+        });
+
+        Action1<String> onNextAction = new Action1<String>() {
+            @Override
+            public void call(String s) {
+                Log.d(TAG, "onNextAction call() s : " + s);
+            }
+        };
+
+        Action1<Throwable> onErrorAction = new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                throwable.printStackTrace();
+            }
+        };
+
+        Action0 onCompletedAction = new Action0() {
+            @Override
+            public void call() {
+                Log.d(TAG, "onCompletedAction call()");
+            }
+        };
+
+        observable.subscribe(onNextAction, onErrorAction, onCompletedAction);
+        observable.subscribe(onNextAction, onErrorAction);
+        observable.subscribe(onNextAction);
+    }
+
+    /**
+     * 订阅Observer
+     */
+    private void testObserver() {
+        if (BuildConfig.DEBUG) Log.d(TAG, " ");
+        Log.d(TAG, "======= testObserver =======");
+        Observer<String> observer = new Observer<String>() {
+            @Override
+            public void onCompleted() {
+                Log.d(TAG, "onCompleted()");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(TAG, "onError()");
+            }
+
+            @Override
+            public void onNext(String s) {
+                Log.d(TAG, s);
+            }
+        };
+
+        Observable observable = Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                subscriber.onNext("Hello");
+                subscriber.onNext("World");
+                subscriber.onNext("!");
+                subscriber.onCompleted();
+            }
+        });
+
+
+        observable.subscribe(observer);
+
+    }
+
+    /**
+     * 订阅subscriber
+     */
+    private void testSubscribe() {
+        if (BuildConfig.DEBUG) Log.d(TAG, " ");
+        Log.d(TAG, "======= testSubscribe =======");
+        final Subscriber<String> subscriber = new Subscriber<String>() {
+            @Override
+            public void onCompleted() {
+                Log.d(TAG, "onCompleted()");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(TAG, "onError()");
+            }
+
+            @Override
+            public void onNext(String s) {
+                Log.d(TAG, s);
+            }
+        };
+        Observable observable = Observable.just("111", "222", "333");
+        observable.subscribe(subscriber);
     }
 
     /**
@@ -70,7 +178,7 @@ public class JavaDemoActivity extends AppCompatActivity {
                         return Integer.parseInt(s);
                     }
                 })
-                .subscribeOn(Schedulers.newThread())
+                // .subscribeOn(Schedulers.newThread())
                 .subscribe(new Action1<Integer>() {
                     @Override
                     public void call(Integer integer) {
