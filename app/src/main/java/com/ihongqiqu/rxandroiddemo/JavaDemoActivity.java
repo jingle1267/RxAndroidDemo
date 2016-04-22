@@ -3,6 +3,7 @@ package com.ihongqiqu.rxandroiddemo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
@@ -14,18 +15,36 @@ public class JavaDemoActivity extends AppCompatActivity {
 
     private static final String TAG = JavaDemoActivity.class.getSimpleName();
 
+    String[] strArr = {"1111;1122", "true;true", "3333;3344", "true", "5555;5566", "false;123;true"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_java_demo);
+    }
 
-        String[] strArr = {"1111;1122", "true;true", "3333;3344", "true", "5555;5566", "false;123;true"};
-        testNormalMethod(strArr);
-        testRxJavaMethod(strArr);
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_test_normal_method:
+                testNormalMethod(strArr);
+                break;
+            case R.id.btn_test_rxjava_method:
+                testRxJavaMethod(strArr);
+                break;
+            case R.id.btn_test_observer:
+                testObserver();
+                break;
+            case R.id.btn_test_subscribe:
+                testSubscribe();
+                break;
+            case R.id.btn_test_action:
+                testAction();
+                break;
 
-        testObserver();
-        testSubscribe();
-        testAction();
+            default:
+
+                break;
+        }
     }
 
     private void testAction() {

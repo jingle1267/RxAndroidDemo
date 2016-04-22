@@ -3,4 +3,13 @@
     <string name="java_demo">Java Demo</string>
     <string name="android_demo">Android Demo</string>
     <string name="rxandroid_demo">RxAndroid Demo</string>
+    <string name="click_to_show_image">Click to show image</string>
+    <string name="ic_launcher">ic_launcher</string>
+    <string name="_1_2_100">1+2+ ... +100 = ?</string>
+    <string name="sum">sum = ?</string>
+    <string name="testnormalmethod">testNormalMethod()</string>
+    <string name="testrxjavamethod">testRxJavaMethod()</string>
+    <string name="testobserver">testObserver()</string>
+    <string name="testsubscribe">testSubscribe()</string>
+    <string name="testaction">testAction()</string>
 </resources>
